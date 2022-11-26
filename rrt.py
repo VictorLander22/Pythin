@@ -6,13 +6,24 @@ Vinicius Machado
 Bruna Silva
 
 """
-
+#PARA QUE O PROGRAMA FUNCIONE DEVE SE APAGAR A PASTA "media" PARA CADA NOVA AMOSTRAGEM, SERAO GERADOS ARQUIVOS jpg COM O TRASADO ENCONTRADO
 import cv2
 import numpy as np
 import math
 import random
 import argparse
 import os
+
+#posicao inicial(start) e final(end) 
+startX = 20
+startY = 20
+endX= 450   
+endY= 250
+
+#Selecione a figura que sera utilizada
+figure = 'World6.png'
+# Obs: Novas figuras podem ser criadas no paint. 
+# Basta adicionar as formas desejadas e salvar o arquivo na pasta juntos com os outros "World"s , o arquivo deve ser salvo como png.
 
 class Nodes:
     """Class que para guardar o grafico"""
@@ -175,13 +186,13 @@ def draw_circle(event,x,y,flags,param):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description = 'Below are the params:')
-    parser.add_argument('-p', type=str, default='World2.png',metavar='ImagePath', action='store', dest='imagePath',
+    parser.add_argument('-p', type=str, default=figure,metavar='ImagePath', action='store', dest='imagePath',
                     help='Path of the image containing mazes')
     parser.add_argument('-s', type=int, default=10,metavar='Stepsize', action='store', dest='stepSize',
                     help='Step-size to be used for RRT branches')
-    parser.add_argument('-start', type=int, default=[20,20], metavar='startCoord', dest='start', nargs='+',
+    parser.add_argument('-start', type=int, default=[startX,startY], metavar='startCoord', dest='start', nargs='+',
                     help='Starting position in the maze')
-    parser.add_argument('-stop', type=int, default=[450,250], metavar='stopCoord', dest='stop', nargs='+',
+    parser.add_argument('-stop', type=int, default=[endX,endY], metavar='stopCoord', dest='stop', nargs='+',
                     help='End position in the maze')
     parser.add_argument('-selectPoint', help='Select start and end points from figure', action='store_true')
 
