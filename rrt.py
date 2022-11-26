@@ -27,7 +27,7 @@ def collision(x1,y1,x2,y2):
     color=[]
     x = list(np.arange(x1,x2,(x2-x1)/100))
     y = list(((y2-y1)/(x2-x1))*(x-x1) + y1)
-    print("collision",x,y)
+    print("Colisao",x,y)
     for i in range(len(x)):
         print(int(x[i]),int(y[i]))
         color.append(img[int(y[i]),int(x[i])])
@@ -43,12 +43,12 @@ def check_collision(x1,y1,x2,y2):
     y=y2 + stepSize*np.sin(theta)
     print(x2,y2,x1,y1)
     print("theta",theta)
-    print("check_collision",x,y)
+    print("Checando colisao",x,y)
 
     # TODO: Corta se o node tiver fora da area da imagem
     hy,hx=img.shape
     if y<0 or y>hy or x<0 or x>hx:
-        print("Point out of image bound")
+        print("Fora de alcance")
         directCon = False
         nodeCon = False
     else:
@@ -107,19 +107,19 @@ def RRT(img, img2, start, end, stepSize):
     pathFound = False
     while pathFound==False:
         nx,ny = rnd_point(h,l)
-        print("Random points:",nx,ny)
+        print("Pontos aleatorios: ",nx,ny)
 
         nearest_ind = nearest_node(nx,ny)
         nearest_x = node_list[nearest_ind].x
         nearest_y = node_list[nearest_ind].y
-        print("Nearest node coordinates:",nearest_x,nearest_y)
+        print("Coordenadas mais proximas: ",nearest_x,nearest_y)
 
         #checa conexao direta
         tx,ty,directCon,nodeCon = check_collision(nx,ny,nearest_x,nearest_y)
-        print("Check collision:",tx,ty,directCon,nodeCon)
+        print("Checando colisao: ",tx,ty,directCon,nodeCon)
 
         if directCon and nodeCon:
-            print("Node can connect directly with end")
+            print("Node pode se conectar com o fim")
             node_list.append(i)
             node_list[i] = Nodes(tx,ty)
             node_list[i].parent_x = node_list[nearest_ind].parent_x.copy()
@@ -131,7 +131,7 @@ def RRT(img, img2, start, end, stepSize):
             cv2.line(img2, (int(tx),int(ty)), (int(node_list[nearest_ind].x),int(node_list[nearest_ind].y)), (0,255,0), thickness=1, lineType=8)
             cv2.line(img2, (int(tx),int(ty)), (end[0],end[1]), (255,0,0), thickness=2, lineType=8)
 
-            print("Path has been found")
+            print("Caminho encontrado")
             #print("parent_x",node_list[i].parent_x)
             for j in range(len(node_list[i].parent_x)-1):
                 cv2.line(img2, (int(node_list[i].parent_x[j]),int(node_list[i].parent_y[j])), (int(node_list[i].parent_x[j+1]),int(node_list[i].parent_y[j+1])), (255,0,0), thickness=2, lineType=8)
@@ -141,7 +141,7 @@ def RRT(img, img2, start, end, stepSize):
             break
 
         elif nodeCon:
-            print("Nodes connected")
+            print("Nodes conectados")
             node_list.append(i)
             node_list[i] = Nodes(tx,ty)
             node_list[i].parent_x = node_list[nearest_ind].parent_x.copy()
@@ -160,7 +160,7 @@ def RRT(img, img2, start, end, stepSize):
             continue
 
         else:
-            print("No direct con. and no node con. :( Generating new rnd numbers")
+            print("Sem conexao direta e entre nodes... gerando novos numeros aleatorios")
             continue
 
 def draw_circle(event,x,y,flags,param):
@@ -175,7 +175,7 @@ def draw_circle(event,x,y,flags,param):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description = 'Below are the params:')
-    parser.add_argument('-p', type=str, default='world3.png',metavar='ImagePath', action='store', dest='imagePath',
+    parser.add_argument('-p', type=str, default='World2.png',metavar='ImagePath', action='store', dest='imagePath',
                     help='Path of the image containing mazes')
     parser.add_argument('-s', type=int, default=10,metavar='Stepsize', action='store', dest='stepSize',
                     help='Step-size to be used for RRT branches')
@@ -189,9 +189,9 @@ if __name__ == '__main__':
 
     # tenta remover dados guardados anteriormente
     try:
-      os.system("rm -rf media")
+     os.system("rm -rf media")
     except:
-      print("Dir already clean")
+      print("Diretorio nao existe")
     os.mkdir("media")
 
     img = cv2.imread(args.imagePath,0) 
@@ -203,7 +203,7 @@ if __name__ == '__main__':
 
     coordinates=[]
     if args.selectPoint:
-        print("Select start and end points by double clicking, press 'escape' to exit")
+        print("Selecione start e os pontos finais dando um duplo click, aperte 'ESC' para sair")
         cv2.namedWindow('image')
         cv2.setMouseCallback('image',draw_circle)
         while(1):
